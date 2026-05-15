@@ -24,5 +24,6 @@ listbox.hpp
 widget.cpp
 widget.hpp
         field.cpp
-        field.hpp)
+        field.hpp
+        grid.cpp)
 target_link_libraries(CLionGraphicsKit graphics)
