@@ -25,5 +25,6 @@ widget.cpp
 widget.hpp
         field.cpp
         field.hpp
-        grid.cpp)
+        grid.cpp
+        grid.hpp)
 target_link_libraries(CLionGraphicsKit graphics)
