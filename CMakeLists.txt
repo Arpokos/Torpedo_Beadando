@@ -22,5 +22,7 @@ label.hpp
 listbox.cpp
 listbox.hpp
 widget.cpp
-widget.hpp)
+widget.hpp
+        field.cpp
+        field.hpp)
 target_link_libraries(CLionGraphicsKit graphics)

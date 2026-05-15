@@ -8,15 +8,16 @@
 #include <vector>
 #include <string>
 
+#include "field.hpp"
 using namespace genv;
 
 int main()
 {
     gout.open(800, 600);
-    gout.set_title("Torpedo Teszt");
+    gout.set_title("Torpedo");
 
     Application app;
-
+    /*
     app.register_widget(new Label(50, 50, 300, 30, "Torpedo - Widget Teszt"));
 
     std::vector<std::string> fegyverek = {"Sima loves", "Szonyegbombazas", "Kereszt-loves", "Radar"};
@@ -24,7 +25,12 @@ int main()
 
     app.register_widget(new Button(50, 280, 200, 40, "Teszt Gomb", []() {
         std::cout << "A gomb tokeletesen mukodik!" << std::endl;
-    }));
+    }));*/
+    field* test_field = new field(300,200,40,0,0,[test_field](int fx,int fy) {
+        std :: cout << "press" << fx << ", "<< fy << std::endl;
+        test_field->set_state(hit);
+    });
+    app.register_widget(test_field);
 
     app.event_loop();
 
