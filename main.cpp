@@ -96,16 +96,18 @@ int main() {
         sync_grids(logic,p1_grid,p2_grid);
     });
     p2_grid = new Grid(450,50,30,[&](int x,int y) {
-        logic.handel_click_p2(x,y);
-        logicstate l_state = logic.get_p2_cell(x,y);
-        field_type f_state = empty;
-        if (l_state == L_hit) {
-            f_state = hit;
+        if (logic.check_winner() == 0) {
+            logic.handel_click_p2(x,y);
+            sync_grids(logic,p1_grid,p2_grid);
+            int winner = logic.check_winner();
+            if (winner == 1) {
+                std::cout<<"Enemy fleet eliminated. You win!"<<std::endl;
+            }
+            else if (winner == 2) {
+                std::cout<<"Your fleet has been destroyed! Game Over."<<std::endl;
+            }
         }
-        else if (l_state == L_miss) {
-            f_state = miss;
-        }
-        p2_grid->set_field_state(x,y,f_state);
+
     });
     Button* start_btn = new Button(300,550,200,50,"start", [&]() {
         logic.start_shooting_phase();

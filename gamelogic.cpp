@@ -46,8 +46,10 @@ void gamelogic::handel_click_p1(int x, int y) {
 }
 
 void gamelogic::start_shooting_phase() {
-    phase = shooting;
-    p2_board[5][5] = L_ship;
+    if (phase == prep) {
+        phase = shooting;
+        place_machine_ships();
+    }
 }
 
 void gamelogic::handel_click_p2(int x, int y) {
@@ -109,5 +111,56 @@ bool gamelogic::can_place_ship(int x, int y,int size,ship_dir dir) {
             return false;
         }
         return true;
+    }
+}
+
+void gamelogic::place_machine_ships() {
+    int ships_to_place[] = {4,3,3,2,2,2,1,1,1,1};
+    for (int size :ships_to_place ) {
+        bool placed = false;
+        while (!placed) {
+            int x = rand() % 10;
+            int y = rand() % 10;
+            ship_dir dir = rand() % 2 == 0 ? horz : vert;
+            bool fits = true;
+            for (int i = 0; i < size; ++i) {
+                int x_check = x + (dir == horz ? i:0);
+                int y_check = y + (dir == vert ? i:0);
+                if (x_check >= 10 || y_check >= 10 || p2_board[x_check][y_check] != L_empty) {
+                    fits = false;
+                    break;
+                }
+            }
+            if (!fits) {
+                for (int i = 0; i < size; ++i) {
+                    int x_check = x + (dir == horz ? i:0);
+                    int y_check = y + (dir == vert ? i:0);
+                    p2_board[x_check][y_check] = L_ship;
+                }
+                placed = true;
+            }
+        }
+    }
+}
+
+int gamelogic::check_winner() {
+    int p1_ships = 0;
+    int p2_ships = 0;
+    for (int i = 0; i <10; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            if (p1_board[i][j] != L_ship) {
+                p1_ships++;
+            }
+            if (p2_board[i][j] != L_ship) {
+                p2_ships++;
+            }
+        }
+        if (p1_ships == 0 && phase == shooting) {
+            return 2;
+        }
+        if (p2_ships == 0 && phase == shooting) {
+            return 1;
+        }
+        return 0;
     }
 }

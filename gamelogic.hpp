@@ -25,6 +25,8 @@ class gamelogic {
     void set_ship_size(int size);
     bool can_place_ship(int x, int y,int size,ship_dir dir);
     void machine_shoot();
+    void place_machine_ships();
+    int check_winner();
 };
 
 
