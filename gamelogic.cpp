@@ -27,11 +27,24 @@ void gamelogic::handel_click_p1(int x, int y) {
     if (phase == prep) {
         if(p1_board[x][y] == L_empty) {
             p1_board[x][y] = L_ship;
-        }else if(p2_board[x][y] == L_ship) {
+        }else if(p1_board[x][y] == L_ship) {
             p1_board[x][y] = L_empty;
         }
     }
 }
-void gamelogic::handel_click_p2(int x, int y) {
 
+void gamelogic::start_shooting_phase() {
+    phase = shooting;
+    p2_board[5][5] = L_ship;
+}
+
+void gamelogic::handel_click_p2(int x, int y) {
+   if (phase == shooting) {
+       if(p2_board[x][y] == L_ship) {
+           p2_board[x][y] = L_hit;
+       }
+       else if(p2_board[x][y] == L_empty) {
+           p2_board[x][y] = L_miss;
+       }
+   }
 }

@@ -46,6 +46,7 @@ int main() {
     ------------------*/
     gamelogic logic;
     Grid* p1_grid = nullptr;
+    Grid* p2_grid = nullptr;
     p1_grid = new Grid(50,50,30,[&](int x,int y){
         logic.handel_click_p1(x,y);
         logicstate l_state = logic.get_p1_cell(x,y);
@@ -61,7 +62,25 @@ int main() {
         }
         p1_grid->set_field_state(x,y,f_state);
     });
+    p2_grid = new Grid(450,50,30,[&](int x,int y) {
+        logic.handel_click_p2(x,y);
+        logicstate l_state = logic.get_p2_cell(x,y);
+        field_type f_state = empty;
+        if (l_state == L_hit) {
+            f_state = hit;
+        }
+        else if (l_state == L_miss) {
+            f_state = miss;
+        }
+        p2_grid->set_field_state(x,y,f_state);
+    });
+    Button* start_btn = new Button(300,550,200,50,"start", [&]() {
+        logic.start_shooting_phase();
+        std::cout<<"game started"<<std::endl;
+    });
     app.register_widget(p1_grid);
+    app.register_widget(p2_grid);
+    app.register_widget(start_btn);
 
     app.event_loop();
 

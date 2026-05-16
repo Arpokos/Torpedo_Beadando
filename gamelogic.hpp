@@ -17,6 +17,7 @@ class gamelogic {
     gamephase get_phase() const;
     void handel_click_p1(int x, int y);
     void handel_click_p2(int x, int y);
+    void start_shooting_phase();
 };
 
 
