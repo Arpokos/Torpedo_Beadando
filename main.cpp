@@ -7,11 +7,43 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <ctime>
 
 #include "field.hpp"
 #include "grid.hpp"
 #include "gamelogic.hpp"
 using namespace genv;
+
+void sync_grids(const gamelogic& logic,Grid* p1_grid,Grid* p2_grid) {
+    for (int x = 0; x <10; ++x) {
+        for (int y = 0; y <10; ++y) {
+            logicstate l1 = logic.get_p1_cell(x,y);
+            if (l1 == L_ship) {
+                p1_grid->set_field_state(x,y,ship);
+            }
+            else if (l1 == L_hit) {
+                p1_grid->set_field_state(x,y,hit);
+            }
+            else if (l1 == L_miss) {
+                p1_grid->set_field_state(x,y,miss);
+            }
+            else {
+                p1_grid->set_field_state(x,y,empty);
+            }
+            logicstate l2 = logic.get_p2_cell(x,y);
+            if (l2 == L_hit) {
+                p2_grid->set_field_state(x,y,hit);
+            }
+            else if (l2 == L_miss) {
+                p2_grid->set_field_state(x,y,miss);
+            }
+            else {
+                p2_grid->set_field_state(x,y,empty);
+            }
+        }
+    }
+}
+
 
 int main() {
     gout.open(800, 600);
@@ -45,22 +77,23 @@ int main() {
     app.register_widget(player_board);
     ------------------*/
     gamelogic logic;
+    Button*rotate_btn = new Button(50,400,200,50,"rotate", [&logic]() {
+    logic.toggle_direction();
+});
+    std::vector<std::string> ships={"S(1)","S(2)","S(3)","S(4)"};
+    ListBox* size_list = new ListBox(50,480,200,100,ships);
+
     Grid* p1_grid = nullptr;
     Grid* p2_grid = nullptr;
     p1_grid = new Grid(50,50,30,[&](int x,int y){
+        if (logic.get_phase()== prep) {
+            int sel_idx = size_list->get_selected_index();
+            if (sel_idx >= 0) {
+            logic.set_ship_size(sel_idx+1);
+            }
+        }
         logic.handel_click_p1(x,y);
-        logicstate l_state = logic.get_p1_cell(x,y);
-        field_type f_state = empty;
-        if (l_state == L_ship) {
-            f_state = ship;
-        }
-        else if (l_state == L_hit) {
-            f_state = hit;
-        }
-        else if (l_state == L_miss) {
-            f_state = miss;
-        }
-        p1_grid->set_field_state(x,y,f_state);
+        sync_grids(logic,p1_grid,p2_grid);
     });
     p2_grid = new Grid(450,50,30,[&](int x,int y) {
         logic.handel_click_p2(x,y);
@@ -81,6 +114,8 @@ int main() {
     app.register_widget(p1_grid);
     app.register_widget(p2_grid);
     app.register_widget(start_btn);
+    app.register_widget(size_list);
+    app.register_widget(rotate_btn);
 
     app.event_loop();
 
