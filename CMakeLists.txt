@@ -26,5 +26,7 @@ widget.hpp
         field.cpp
         field.hpp
         grid.cpp
-        grid.hpp)
+        grid.hpp
+        gamelogic.cpp
+        gamelogic.hpp)
 target_link_libraries(CLionGraphicsKit graphics)

@@ -10,6 +10,7 @@
 
 #include "field.hpp"
 #include "grid.hpp"
+#include "gamelogic.hpp"
 using namespace genv;
 
 int main() {
@@ -36,11 +37,31 @@ int main() {
     app.register_widget(test_field);
     -------------*/
 
+    /*---------------------
     Grid* player_board = new Grid(50,50,30,[player_board](int x,int y){
         std:: cout << "press"<< x << "," << y << std::endl;
     player_board->set_field_state(x,y,ship);
     });
     app.register_widget(player_board);
+    ------------------*/
+    gamelogic logic;
+    Grid* p1_grid = nullptr;
+    p1_grid = new Grid(50,50,30,[&](int x,int y){
+        logic.handel_click_p1(x,y);
+        logicstate l_state = logic.get_p1_cell(x,y);
+        field_type f_state = empty;
+        if (l_state == L_ship) {
+            f_state = ship;
+        }
+        else if (l_state == L_hit) {
+            f_state = hit;
+        }
+        else if (l_state == L_miss) {
+            f_state = miss;
+        }
+        p1_grid->set_field_state(x,y,f_state);
+    });
+    app.register_widget(p1_grid);
 
     app.event_loop();
 
