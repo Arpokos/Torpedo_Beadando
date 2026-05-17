@@ -110,8 +110,9 @@ bool gamelogic::can_place_ship(int x, int y,int size,ship_dir dir) {
         if (p1_board[x_check][y_check] != L_empty) {
             return false;
         }
-        return true;
+
     }
+    return true;
 }
 
 void gamelogic::place_machine_ships() {
@@ -131,7 +132,7 @@ void gamelogic::place_machine_ships() {
                     break;
                 }
             }
-            if (!fits) {
+            if (fits) {
                 for (int i = 0; i < size; ++i) {
                     int x_check = x + (dir == horz ? i:0);
                     int y_check = y + (dir == vert ? i:0);
@@ -161,6 +162,7 @@ int gamelogic::check_winner() {
         if (p2_ships == 0 && phase == shooting) {
             return 1;
         }
-        return 0;
+
     }
+    return 0;
 }
