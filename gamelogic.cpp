@@ -149,20 +149,21 @@ int gamelogic::check_winner() {
     int p2_ships = 0;
     for (int i = 0; i <10; ++i) {
         for (int j = 0; j < 10; ++j) {
-            if (p1_board[i][j] != L_ship) {
+            if (p1_board[i][j] == L_ship) {
                 p1_ships++;
             }
-            if (p2_board[i][j] != L_ship) {
+            if (p2_board[i][j] == L_ship) {
                 p2_ships++;
             }
         }
-        if (p1_ships == 0 && phase == shooting) {
-            return 2;
-        }
-        if (p2_ships == 0 && phase == shooting) {
-            return 1;
-        }
 
     }
+    if (p1_ships == 0 ) {
+        return 2;
+    }
+    if (p2_ships == 0 ) {
+        return 1;
+    }
     return 0;
+
 }
