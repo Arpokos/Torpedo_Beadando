@@ -28,5 +28,7 @@ widget.hpp
         grid.cpp
         grid.hpp
         gamelogic.cpp
-        gamelogic.hpp)
+        gamelogic.hpp
+        mester.cpp
+        mester.hpp)
 target_link_libraries(CLionGraphicsKit graphics)
